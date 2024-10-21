@@ -1,0 +1,31 @@
+{
+  "profile-info": [
+    {
+      "id": 0,
+      "name": "Иван Петров",
+      "age": 30,
+      "city": "New York",
+      "category": "Основы программирования и разработки ПО",
+      "averageHardSkill": 2.5,
+      "averageSoftSkill": 3.0
+    },
+    {
+      "id": 1,
+      "name": "Анна Иванова",
+      "age": 25,
+      "city": "Los Angeles",
+      "category": "Разработка веб-приложений",
+      "averageHardSkill": 3.0,
+      "averageSoftSkill": 2.8
+    },
+    {
+      "id": 2,
+      "name": "Алексей Зайцев",
+      "age": 28,
+      "city": "Chicago",
+      "category": "DevOps и системное администрирование",
+      "averageHardSkill": 2.7,
+      "averageSoftSkill": 2.9
+    }
+  ]
+}

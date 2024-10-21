@@ -1,0 +1,30 @@
+{
+    "softSkills": [
+        {
+            "category": "Социальные навыки",
+            "skills": [
+                {
+                    "name": "Teamwork",
+                    "indicators": [
+                        "I communicate effectively in teams",
+                        "I can manage group tasks"
+                    ]
+                },
+                {
+                    "name": "Communication",
+                    "indicators": [
+                        "I present ideas clearly",
+                        "I listen actively"
+                    ]
+                },
+                {
+                    "name": "Problem-Solving",
+                    "indicators": [
+                        "I identify root causes",
+                        "I implement creative solutions"
+                    ]
+                }
+            ]
+        }
+    ]
+}

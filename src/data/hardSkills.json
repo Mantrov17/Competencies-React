@@ -1,0 +1,273 @@
+{
+    "hardSkills": [
+        {
+            "category": "Основы программирования и разработки ПО",
+            "skills": [
+                {
+                    "name": "Языки программирования",
+                    "indicators": [
+                        "Python",
+                        "Java",
+                        "JavaScript",
+                        "C#",
+                        "C++",
+                        "Ruby",
+                        "Go",
+                        "Rust"
+                    ]
+                },
+                {
+                    "name": "Алгоритмы и структуры данных",
+                    "indicators": [
+                        "Базовые структуры (массивы, списки, деревья, хеш-таблицы)",
+                        "Алгоритмы сортировки и поиска"
+                    ]
+                },
+                {
+                    "name": "Паттерны проектирования",
+                    "indicators": [
+                        "Одиночка",
+                        "Фабричный метод",
+                        "Наблюдатель",
+                        "Стратегия"
+                    ]
+                },
+                {
+                    "name": "Методологии разработки",
+                    "indicators": [
+                        "Agile",
+                        "Scrum",
+                        "Kanban",
+                        "Waterfall"
+                    ]
+                },
+                {
+                    "name": "Контроль версий",
+                    "indicators": [
+                        "Git",
+                        "GitHub",
+                        "GitLab"
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "Разработка веб-приложений",
+            "skills": [
+                {
+                    "name": "Frontend (клиентская часть)",
+                    "indicators": [
+                        "HTML/CSS",
+                        "JavaScript",
+                        "TypeScript",
+                        "Фреймворки: React, Angular, Vue.js, Svelte",
+                        "Веб-стандарты: REST, GraphQL, WebSockets",
+                        "Адаптивная вёрстка (Responsive Design)",
+                        "Основы UX/UI-дизайна"
+                    ]
+                },
+                {
+                    "name": "Backend (серверная часть)",
+                    "indicators": [
+                        "Node.js",
+                        "Django",
+                        "Flask",
+                        "Spring",
+                        ".NET Core",
+                        "API: разработка и документирование REST/GraphQL API",
+                        "Базы данных: SQL (PostgreSQL, MySQL), NoSQL (MongoDB, Redis)",
+                        "Автоматизация: CI/CD (Jenkins, GitLab CI, CircleCI)"
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "DevOps и системное администрирование",
+            "skills": [
+                {
+                    "name": "Контейнеризация и оркестрация",
+                    "indicators": [
+                        "Docker",
+                        "Kubernetes",
+                        "OpenShift"
+                    ]
+                },
+                {
+                    "name": "CI/CD",
+                    "indicators": [
+                        "Jenkins",
+                        "GitLab CI",
+                        "Travis CI"
+                    ]
+                },
+                {
+                    "name": "Управление конфигурациями",
+                    "indicators": [
+                        "Ansible",
+                        "Puppet",
+                        "Chef",
+                        "Terraform"
+                    ]
+                },
+                {
+                    "name": "Виртуализация",
+                    "indicators": [
+                        "Vagrant",
+                        "VMware",
+                        "Hyper-V",
+                        "Proxmox"
+                    ]
+                },
+                {
+                    "name": "Системы мониторинга",
+                    "indicators": [
+                        "Prometheus",
+                        "Grafana",
+                        "ELK Stack (Elasticsearch, Logstash, Kibana)"
+                    ]
+                },
+                {
+                    "name": "Облачные технологии",
+                    "indicators": [
+                        "AWS",
+                        "Google Cloud",
+                        "Microsoft Azure"
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "Информационная безопасность (Cybersecurity)",
+            "skills": [
+                {
+                    "name": "Защита сетей и систем",
+                    "indicators": [
+                        "VPN",
+                        "Firewalls",
+                        "IDS/IPS (Intrusion Detection/Prevention Systems)"
+                    ]
+                },
+                {
+                    "name": "Криптография",
+                    "indicators": [
+                        "SSL/TLS",
+                        "Шифрование данных",
+                        "Цифровые подписи"
+                    ]
+                },
+                {
+                    "name": "Анализ уязвимостей",
+                    "indicators": [
+                        "OWASP",
+                        "Тестирование на проникновение (Pentesting)",
+                        "Nmap",
+                        "Metasploit"
+                    ]
+                },
+                {
+                    "name": "Управление инцидентами",
+                    "indicators": [
+                        "SIEM-системы (Splunk, QRadar)"
+                    ]
+                },
+                {
+                    "name": "Compliance и стандарты безопасности",
+                    "indicators": [
+                        "ISO 27001",
+                        "GDPR",
+                        "PCI DSS"
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "Работа с данными (Data Science и Big Data)",
+            "skills": [
+                {
+                    "name": "Языки и инструменты анализа данных",
+                    "indicators": [
+                        "Python (Pandas, NumPy, SciPy)",
+                        "R",
+                        "SQL"
+                    ]
+                },
+                {
+                    "name": "Машинное обучение",
+                    "indicators": [
+                        "Библиотеки: TensorFlow, PyTorch, scikit-learn",
+                        "Методы: классификация, кластеризация, регрессия"
+                    ]
+                },
+                {
+                    "name": "Работа с большими данными (Big Data)",
+                    "indicators": [
+                        "Hadoop",
+                        "Apache Spark",
+                        "Apache Kafka"
+                    ]
+                },
+                {
+                    "name": "Базы данных и хранилища",
+                    "indicators": [
+                        "OLAP-системы",
+                        "Базы данных (Cassandra, HBase)"
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "Мобильная разработка",
+            "skills": [
+                {
+                    "name": "Платформы",
+                    "indicators": [
+                        "iOS (Swift)",
+                        "Android (Kotlin, Java)"
+                    ]
+                },
+                {
+                    "name": "Кроссплатформенные технологии",
+                    "indicators": [
+                        "Flutter",
+                        "React Native",
+                        "Xamarin"
+                    ]
+                },
+                {
+                    "name": "Оптимизация производительности мобильных приложений",
+                    "indicators": []
+                }
+            ]
+        },
+        {
+            "category": "Управление проектами и качество ПО",
+            "skills": [
+                {
+                    "name": "Методологии тестирования",
+                    "indicators": [
+                        "Юнит-тестирование",
+                        "Интеграционное тестирование",
+                        "Нагрузочное тестирование"
+                    ]
+                },
+                {
+                    "name": "Инструменты тестирования",
+                    "indicators": [
+                        "Selenium",
+                        "JUnit",
+                        "Postman",
+                        "Apache JMeter"
+                    ]
+                },
+                {
+                    "name": "Трекеры задач и багов",
+                    "indicators": [
+                        "Jira",
+                        "Trello",
+                        "Asana"
+                    ]
+                }
+            ]
+        }
+    ]
+}
