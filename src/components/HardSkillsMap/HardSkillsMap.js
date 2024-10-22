@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styles from './HardSkillsMap.module.scss';
 import NavBar from "../NavBar/NavBar";
 
@@ -110,6 +110,11 @@ const HardSkillsMap = () => {
                     </li>
                 ))}
             </ul>
+            <div className={styles.rateButtons}>
+                <Link to={`/profile-info/${id}`}>
+                    <button>Вернуться к профилю</button>
+                </Link>
+            </div>
             <button className={styles.submitButton} onClick={handleSubmit}>Отправить</button>
         </div>
     );

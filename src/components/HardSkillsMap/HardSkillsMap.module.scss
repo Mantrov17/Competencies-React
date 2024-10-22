@@ -1,7 +1,9 @@
 $primary-color: #0035a0;
 $secondary-color: #6c757d;
-$success-color: #31bc52;
+$success-color: #37aa4a;
 $danger-color: #dc3545;
+$hover-color: #00246e;
+$hover-success-color: #287734;
 
 .headerText {
   font-size: 2rem;
@@ -19,7 +21,7 @@ $danger-color: #dc3545;
   gap: 20px;
   padding: 0;
   justify-content: center;
-
+  margin-bottom: 60px;
   li {
     width: 300px;
     list-style-type: none;
@@ -52,6 +54,7 @@ $danger-color: #dc3545;
           margin: auto;
         }
         select {
+          cursor: pointer;
           border-radius: 50%;
           width: 35px;
           text-align: center;
@@ -83,6 +86,45 @@ $danger-color: #dc3545;
   right: 20px;
   bottom: 20px;
   color: white;
+  &:hover{
+    background-color: $hover-success-color;
+    box-shadow: 0 2px 25px $hover-success-color;
+  }
+}
+
+.rateButtons {
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+
+  a {
+    margin-right: 50%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    cursor: auto;
+    z-index: 1;
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    width: 195px;
+
+    button {
+      width: 100%;
+      font-size: 1em;
+      background-color: $primary-color;
+      box-shadow: 0 2px 25px $primary-color;
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+      &:hover{
+        background-color: $hover-color;
+      }
+    }
+  }
 }
 
 

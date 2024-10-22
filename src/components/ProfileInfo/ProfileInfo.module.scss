@@ -1,5 +1,6 @@
 $primary-color: #0035a0;
 $secondary-color: #f0f0f0;
+$hover-color: #00246e;
 
 .headerText {
   font-size: 2rem;
@@ -60,14 +61,19 @@ $secondary-color: #f0f0f0;
     justify-content: center;
     text-decoration: none;
     cursor: auto;
-
+    margin-right: 30px;
+    margin-left: 30px;
     button {
-      width: 80%;
+
+      width: 100%;
       background-color: $primary-color;
       box-shadow: 0 2px 25px $primary-color;
       border: none;
       color: white;
       cursor: pointer;
+      &:hover{
+        background-color: $hover-color;
+      }
     }
   }
 }

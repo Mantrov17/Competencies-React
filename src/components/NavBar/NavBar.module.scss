@@ -1,4 +1,5 @@
 $primary-color: #0035a0;
+$hover-color: #002977;
 
 .navBar {
   display: flex;
@@ -19,12 +20,13 @@ $primary-color: #0035a0;
   height: 100%;
   align-items: center;
   padding-right: 10px;
-}
+  padding-left: 10px;
 
-.myProfileButton img {
-  max-height: 90%;
-  max-width: 50px;
-  border-radius: 50%;
+  img {
+    max-height: 90%;
+    max-width: 50px;
+    border-radius: 50%;
+  }
 }
 
 .usersRateButton {
@@ -34,4 +36,10 @@ $primary-color: #0035a0;
   text-decoration: none;
   color: white;
   margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  &:hover {
+      background-color: $hover-color;
+      opacity: 80%;
+  }
 }

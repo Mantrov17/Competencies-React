@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styles from './SoftSkillsMap.module.scss';
 import NavBar from "../NavBar/NavBar";
 
@@ -81,7 +81,7 @@ const SoftSkillsMap = () => {
 
     return (
         <div>
-            <NavBar />
+            <NavBar/>
             <h2 className={styles.headerText}>Оцените Soft скиллы {user.name}</h2>
             {isSaving && <p>Saving changes...</p>}
             <ul className={styles.allSkillsList}>
@@ -109,6 +109,11 @@ const SoftSkillsMap = () => {
                     </li>
                 ))}
             </ul>
+            <div className={styles.rateButtons}>
+                <Link to={`/profile-info/${id}`}>
+                    <button>Вернуться к профилю</button>
+                </Link>
+            </div>
             <button className={styles.submitButton} onClick={handleSubmit}>Отправить</button>
         </div>
     );
