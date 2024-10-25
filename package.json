@@ -12,7 +12,8 @@
     "server:users": "json-server -w src/data/users.json -p 3001",
     "server:hardSkills": "json-server -w src/data/hardSkills.json -p 3002",
     "server:softSkills": "json-server -w src/data/softSkills.json -p 3003",
-    "devs": "concurrently \"npm run server:users\" \"npm run server:hardSkills\" \"npm run server:softSkills\" \"npm run dev\""
+    "server:loginPage": "json-server -w src/data/auth.json --port 3004",
+    "devs": "concurrently \"npm run server:users\" \"npm run server:hardSkills\" \"npm run server:softSkills\" \"npm run server:loginPage\" \"npm run dev\" "
   },
   "keywords": [],
   "author": "",
