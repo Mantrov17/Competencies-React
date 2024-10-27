@@ -1,36 +1,58 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
-import NavBar from "../NavBar/NavBar";
-import styles from "./WorkersListPage.module.scss";
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../store/authSlice';
+import { useNavigate, Link } from 'react-router-dom';
+import { apiFetch } from '../../utils/api';
+import NavBar from "../NavBar/NavBar"; // Импорт apiFetch для автоматизации заголовков
 
 const WorkersListPage = () => {
     const [profiles, setProfiles] = useState([]);
+    const { user, accessToken } = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
+        // Проверка, есть ли accessToken
+        if (!accessToken) {
+            navigate('/');
+            return;
+        }
+
+        // Функция загрузки списка пользователей
         const fetchProfiles = async () => {
             try {
-                const response = await fetch('http://localhost:3001/profile-info');
-                if (!response.ok) {
-                    throw new Error('Ошибка при загрузке профилей');
-                }
-                const data = await response.json();
+                const data = await apiFetch('http://localhost:8080/users/');
                 setProfiles(data);
             } catch (error) {
-                console.error('Ошибка:', error);
+                console.error('Ошибка при загрузке профилей:', error);
             }
         };
 
         fetchProfiles();
-    }, []);
+    }, [accessToken, navigate]);
+
+    // Обработка выхода из аккаунта
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate('/');
+    };
 
     return (
         <div>
-            <NavBar />
-            <h1 className={styles.headerText}>Выберите сотрудника для оценки</h1>
-            <ul className={styles.profilesList}>
+            <NavBar/>
+            <h2>Список работников</h2>
+            {user && (
+                <div>
+                    <p>Вы вошли как: {user.firstName} {user.lastName}</p>
+                    <button onClick={handleLogout}>Выйти</button>
+                </div>
+            )}
+            <ul>
                 {profiles.map(profile => (
-                    <li className={styles.profile} key={profile.id}>
-                        <Link to={`/profile-info/${profile.id}`}>{profile.name}</Link>
+                    <li key={profile.id}>
+                        <Link to={`/profile-info/${profile.id}`}>
+                            {profile.firstName} {profile.lastName}
+                        </Link>
                     </li>
                 ))}
             </ul>

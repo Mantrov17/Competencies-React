@@ -1,112 +1,113 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styles from './HardSkillsMap.module.scss';
-import NavBar from "../NavBar/NavBar";
+import NavBar from '../NavBar/NavBar';
+import { apiFetch } from '../../utils/api';
+import { useSelector } from 'react-redux';
 
 const HardSkillsMap = () => {
     const { id } = useParams();
-    const [hardSkills, setHardSkills] = useState([]);
     const [user, setUser] = useState(null);
+    const [hardSkillsData, setHardSkillsData] = useState([]);
     const [ratings, setRatings] = useState({});
     const [isSaving, setIsSaving] = useState(false);
 
+    // Получение идентификатора текущего пользователя из Redux store
+    const currentUser = useSelector((state) => state.auth.user);
+
+    // Загрузка данных пользователя по ID
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const userId = Number(id);
-                const response = await fetch(`http://localhost:3001/profile-info?id=${userId}`);
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                const data = await response.json();
-                setUser(data[0]);
+                const userData = await apiFetch(`http://localhost:8080/users/${id}`);
+                setUser(userData);
             } catch (error) {
-                console.error("Error loading user data:", error);
+                console.error("Ошибка при загрузке данных пользователя:", error);
             }
         };
 
         fetchUserData();
     }, [id]);
 
+    // Загрузка списка hard skills, привязанных к пользователю
     useEffect(() => {
         const fetchHardSkillsData = async () => {
-            if (!user) return;
-
             try {
-                const response = await fetch(`http://localhost:3002/hardSkills`);
-                const data = await response.json();
-                const skillsForCategory = data.find(item => item.category === user.category);
-                if (skillsForCategory) {
-                    setHardSkills(skillsForCategory.skills);
-                    const initialRatings = {};
-                    skillsForCategory.skills.forEach(skill => {
-                        skill.indicators.forEach(indicator => {
-                            initialRatings[skill.name] = {
-                                ...initialRatings[skill.name],
-                                [indicator]: "no data"
-                            };
-                        });
-                    });
-                    setRatings(initialRatings);
-                }
+                const data = await apiFetch(`http://localhost:8080/users/${id}/hard-skills/user-profession`);
+                setHardSkillsData(data.commonHardSkills);
+                initializeRatings(data.commonHardSkills);
             } catch (error) {
-                console.error("Error loading hard skills data:", error);
+                console.error("Ошибка при загрузке hard skills:", error);
             }
         };
 
         fetchHardSkillsData();
-    }, [user]);
+    }, [id]);
 
-    const handleRatingChange = (skillName, indicator, rating) => {
+    // Инициализация оценок "Нет данных" для каждого hard skill
+    const initializeRatings = (skills) => {
+        const initialRatings = {};
+        skills.forEach(skill => {
+            initialRatings[skill.id] = "no data";
+        });
+        setRatings(initialRatings);
+    };
+
+    // Обработка изменений оценки для конкретного навыка
+    const handleRatingChange = (skillId, rating) => {
         setRatings(prevRatings => ({
             ...prevRatings,
-            [skillName]: {
-                ...prevRatings[skillName],
-                [indicator]: rating
-            }
+            [skillId]: rating
         }));
     };
 
-    const handleSubmit = () => {
+    // Отправка оценок на сервер
+    const handleSubmit = async () => {
         setIsSaving(true);
-        setTimeout(() => {
-            console.log("Ratings submitted:", ratings);
+        try {
+            await Promise.all(
+                Object.entries(ratings).map(([skillId, rating]) =>
+                    apiFetch('http://localhost:8080/hard-skill-rating/add', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            skillId,
+                            rating,
+                            ratedUserId: id,
+                            raterUserId: currentUser.id,
+                        }),
+                    })
+                )
+            );
+            alert("Оценки успешно отправлены");
+        } catch (error) {
+            console.error("Ошибка при отправке оценок:", error);
+        } finally {
             setIsSaving(false);
-        }, 1000);
+        }
     };
 
-    if (!user) {
-        return <div>Loading...</div>;
-    }
+    if (!user) return <div>Загрузка данных...</div>;
 
     return (
         <div>
             <NavBar />
-            <h2 className={styles.headerText}>Оцените Hard скиллы {user.name} в сфере "{user.category}"</h2>
-            {isSaving && <p>Saving changes...</p>}
+            <h2 className={styles.headerText}>Оцените Hard Skills {user.firstName} {user.lastName}</h2>
+            {isSaving && <p>Сохранение изменений...</p>}
             <ul className={styles.allSkillsList}>
-                {hardSkills.map(skill => (
-                    <li key={skill.name}>
+                {hardSkillsData.map(skill => (
+                    <li key={skill.id}>
                         <div>{skill.name}</div>
-                        <ul className={styles.concreteSkillsList}>
-                            {skill.indicators.map(indicator => (
-                                <li key={indicator}>
-                                    <span>{indicator}:</span>
-
-                                    <select
-                                        value={ratings[skill.name]?.[indicator] || "no data"}
-                                        onChange={(e) => handleRatingChange(skill.name, indicator, e.target.value)}
-                                    >
-                                        <option value="no data"></option>
-                                        <option value="-1">-1</option>
-                                        <option value="0">0</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
-                                </li>
-                            ))}
-                        </ul>
+                        <select
+                            value={ratings[skill.id] || "no data"}
+                            onChange={(e) => handleRatingChange(skill.id, e.target.value)}
+                        >
+                            <option value="no data">Нет данных</option>
+                            <option value="-1">-1</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
                     </li>
                 ))}
             </ul>

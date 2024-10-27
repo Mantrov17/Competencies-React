@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './HardSkillNoRate.scss';
 import NavBar from "../NavBar/NavBar";
+import { apiFetch } from '../../utils/api';
 
 const HardSkillNoRate = () => {
     const { category } = useParams();
@@ -10,12 +11,8 @@ const HardSkillNoRate = () => {
     useEffect(() => {
         const fetchSkillsData = async () => {
             try {
-                const response = await fetch(`http://localhost:3002/hardSkills`);
-                const data = await response.json();
-                const skillsForCategory = data.find(item => item.category === category);
-                if (skillsForCategory) {
-                    setSkills(skillsForCategory.skills);
-                }
+                const data = await apiFetch(`http://localhost:8080/hard-skills/category/${category}`);
+                setSkills(data);
             } catch (error) {
                 console.error("Error loading skills data:", error);
             }
@@ -34,12 +31,12 @@ const HardSkillNoRate = () => {
             <h2 className={styles.headerText}>Все индикаторы для категории "{category}"</h2>
             <ul className={styles.allSkillsList}>
                 {skills.map(skill => (
-                    <li key={skill.name}>
+                    <li key={skill.id}>
                         <div>{skill.name}</div>
                         <ul className={styles.concreteSkillsList}>
                             {skill.indicators.map(indicator => (
-                                <li key={indicator}>
-                                    <span>{indicator}</span>
+                                <li key={indicator.id}>
+                                    <span>{indicator.name}</span>
                                 </li>
                             ))}
                         </ul>

@@ -1,73 +1,81 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { registerUser } from '../../store/authSlice'; // Corrected import
 import { useNavigate } from 'react-router-dom';
-import styles from './RegistrationPage.module.scss';
+import styles from './RegistrationPage.module.scss'
 import NavBar from "../NavBar/NavBar";
 
 const RegistrationPage = () => {
-    const [username, setUsername] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
+
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const handleRegistration = async (e) => {
+    const {status, error} = useSelector((state) => state.auth);
+
+    const handleRegistration = (e) => {
         e.preventDefault();
-
-        try {
-            const response = await fetch('http://localhost:8080/api/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password }),
+        dispatch(registerUser({firstName, lastName, email, password}))
+            .unwrap()
+            .then(() => {
+                navigate('/');
+            })
+            .catch((err) => {
+                console.error('Ошибка регистрации:', err);
             });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                setMessage(data.message);
-                navigate('/login');
-            } else {
-                setMessage(data.message || 'Ошибка регистрации');
-            }
-        } catch (error) {
-            console.error('Registration error:', error);
-            setMessage('Ошибка при регистрации');
-        }
     };
 
     return (
         <div>
             <NavBar/>
             <div className={styles.registrationPage}>
-
                 <h2>Регистрация</h2>
                 <form onSubmit={handleRegistration}>
                     <div>
-                        <label htmlFor="username">Имя пользователя:</label>
+                        <label>Имя:</label>
                         <input
                             type="text"
-                            id="username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
                             required
                         />
                     </div>
                     <div>
-                        <label htmlFor="password">Пароль:</label>
+                        <label>Фамилия:</label>
+                        <input
+                            type="text"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label>Email:</label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label>Пароль:</label>
                         <input
                             type="password"
-                            id="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
                     </div>
-                    {message && <p className={styles.message}>{message}</p>}
+                    {status === 'loading' && <p>Регистрация...</p>}
+                    {error && <p className={styles.errorMessage}>Ошибка: Неверный логин или пароль</p>}
                     <button type="submit">Зарегистрироваться</button>
                 </form>
             </div>
         </div>
-
     );
 };
 

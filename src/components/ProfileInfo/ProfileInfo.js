@@ -1,51 +1,52 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from "react-router-dom";
 import NavBar from "../NavBar/NavBar";
 import styles from './ProfileInfo.module.scss';
+import { apiFetch } from '../../utils/api'; // Централизованный метод API
 
 const ProfileInfo = () => {
     const { id } = useParams();
-    const [user, setUser] = React.useState(null);
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true); // Индикатор загрузки
 
+    // Получение данных пользователя по ID
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const userId = Number(id);
-                const response = await fetch(`http://localhost:3001/profile-info?id=${userId}`);
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                const data = await response.json();
-                setUser(data[0]);
+                // Используем apiFetch для автоматического добавления заголовка Authorization
+                const data = await apiFetch(`http://localhost:8080/users/${id}`);
+                setUser(data);
             } catch (error) {
-                console.error("Error loading data:", error);
+                console.error("Ошибка при загрузке данных пользователя:", error);
+            } finally {
+                setLoading(false); // Отключаем индикатор загрузки после завершения запроса
             }
         };
 
         fetchUserData();
     }, [id]);
 
+    // Если данные еще загружаются
+    if (loading) {
+        return <div>Загрузка данных...</div>;
+    }
+
+    // Если данные пользователя отсутствуют (например, пользователь с таким ID не найден)
     if (!user) {
-        return <div>Loading...</div>;
+        return <div>Пользователь не найден</div>;
     }
 
     return (
         <div className={styles.profilePage}>
             <NavBar />
             <div className={styles.profileBox}>
-                <h2 className={styles.headerText}>{user.name}</h2>
-                <p>Возраст: {user.age}</p>
-                <p>Место работы: {user.city}</p>
-                <p>Специальность: {user.category}</p>
+                <h2 className={styles.headerText}>{user.firstName} {user.lastName}</h2>
+                <p>Город: {user.city}</p>
+                <p>Профессия: {user.profession?.name}</p>
+                <p>Дата рождения: {user.dateOfBirth}</p>
+                <p>Пол: {user.gender}</p>
                 <div className={styles.rating}>
-                    <div>
-                        <p>Средняя оценка Hard Скиллов: </p>
-                        <p className={styles.ratingNumber}>{user.averageHardSkill}</p>
-                    </div>
-                    <div>
-                        <p>Средняя оценка Soft Скиллов: </p>
-                        <p className={styles.ratingNumber}>{user.averageSoftSkill}</p>
-                    </div>
+                    {/* Добавьте логику для отображения среднего рейтинга, если доступно */}
                 </div>
             </div>
             <div className={styles.rateButtons}>

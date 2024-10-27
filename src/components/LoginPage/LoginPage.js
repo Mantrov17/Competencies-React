@@ -1,70 +1,56 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // Импортируем Link
-import styles from './LoginPage.module.scss';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../../store/authSlice';
+import { Link, useNavigate } from 'react-router-dom';
+import styles from "./LoginPage.module.scss"
 import NavBar from "../NavBar/NavBar";
 
 const LoginPage = () => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
+    const { user, accessToken, status, error } = useSelector((state) => state.auth);
 
-        try {
-            const response = await fetch('http://localhost:8080/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({username, password}),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                localStorage.setItem('accessToken', data.accessToken);
-                localStorage.setItem('userId', data.userId);
-                navigate('/workers-list-page');
-            } else {
-                setErrorMessage(data.message || 'Ошибка аутентификации');
-            }
-        } catch (error) {
-            console.error('Login error:', error);
-            setErrorMessage('Ошибка при входе');
+    useEffect(() => {
+        if (accessToken) {
+            navigate('/workers-list-page');
         }
-    };
+    }, [accessToken, navigate]);
 
+    const handleLogin = (e) => {
+        e.preventDefault();
+        dispatch(loginUser({ email, password }));
+    };
 
     return (
         <div>
             <NavBar/>
             <div className={styles.loginPage}>
-
-                <h2>Вход в систему</h2>
+                <h2>Вход</h2>
                 <form onSubmit={handleLogin}>
                     <div>
-                        <label htmlFor="username">Имя пользователя:</label>
+                        <label>Email:</label>
                         <input
-                            type="text"
-                            id="username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             required
                         />
                     </div>
                     <div>
-                        <label htmlFor="password">Пароль:</label>
+                        <label>Пароль:</label>
                         <input
                             type="password"
-                            id="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
                     </div>
-                    {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+                    {status === 'loading' && <p>Вход...</p>}
+                    {error && <p className={styles.errorMessage}>Ошибка: Неверный логин или пароль</p>}
                     <button type="submit">Войти</button>
                 </form>
                 <p>

@@ -2,26 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styles from './SoftSkillsMap.module.scss';
 import NavBar from "../NavBar/NavBar";
+import { apiFetch } from '../../utils/api';
+import { useSelector } from 'react-redux';
 
 const SoftSkillsMap = () => {
     const { id } = useParams();
-    const [softSkills, setSoftSkills] = useState([]);
     const [user, setUser] = useState(null);
+    const [softSkills, setSoftSkills] = useState([]);  // Инициализация пустым массивом
     const [ratings, setRatings] = useState({});
     const [isSaving, setIsSaving] = useState(false);
+
+    const currentUser = useSelector((state) => state.auth.user);
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const userId = Number(id);
-                const response = await fetch(`http://localhost:3001/profile-info?id=${userId}`);
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                const data = await response.json();
-                setUser(data[0]);
+                const userData = await apiFetch(`http://localhost:8080/users/${id}`);
+                setUser(userData);
             } catch (error) {
-                console.error("Error loading user data:", error);
+                console.error("Ошибка при загрузке данных пользователя:", error);
             }
         };
 
@@ -30,32 +29,28 @@ const SoftSkillsMap = () => {
 
     useEffect(() => {
         const fetchSoftSkillsData = async () => {
-            if (!user) return;
-
             try {
-                const response = await fetch(`http://localhost:3003/softSkills`);
-                const data = await response.json();
-                const skillsForCategory = data.find(item => item.category === "Социальные навыки");
-                if (skillsForCategory) {
-                    setSoftSkills(skillsForCategory.skills);
-                    const initialRatings = {};
-                    skillsForCategory.skills.forEach(skill => {
-                        skill.indicators.forEach(indicator => {
-                            initialRatings[skill.name] = {
-                                ...initialRatings[skill.name],
-                                [indicator]: "no data"
-                            };
-                        });
-                    });
-                    setRatings(initialRatings);
-                }
+                const data = await apiFetch('http://localhost:8080/soft-skill/all');
+                setSoftSkills(data || []); // Убедимся, что значение не будет undefined
+                initializeRatings(data);
             } catch (error) {
-                console.error("Error loading soft skills data:", error);
+                console.error("Ошибка при загрузке soft skills:", error);
             }
         };
 
         fetchSoftSkillsData();
-    }, [user]);
+    }, []);
+
+    const initializeRatings = (skills) => {
+        const initialRatings = {};
+        (skills || []).forEach(skill => {
+            initialRatings[skill.name] = {};
+            (skill.indicators || []).forEach(indicator => {
+                initialRatings[skill.name][indicator] = "no data";
+            });
+        });
+        setRatings(initialRatings);
+    };
 
     const handleRatingChange = (skillName, indicator, rating) => {
         setRatings(prevRatings => ({
@@ -67,48 +62,71 @@ const SoftSkillsMap = () => {
         }));
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         setIsSaving(true);
-        setTimeout(() => {
-            console.log("Ratings submitted:", ratings);
+        try {
+            await Promise.all(
+                Object.entries(ratings).flatMap(([skillName, indicators]) =>
+                    Object.entries(indicators).map(([indicator, rating]) =>
+                        apiFetch('http://localhost:8080/soft-skill-rating/add', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                skillName,
+                                indicator,
+                                rating,
+                                ratedUserId: id,
+                                raterUserId: currentUser.id,
+                            }),
+                        })
+                    )
+                )
+            );
+            alert("Оценки успешно отправлены");
+        } catch (error) {
+            console.error("Ошибка при отправке оценок:", error);
+        } finally {
             setIsSaving(false);
-        }, 1000);
+        }
     };
 
-    if (!user) {
-        return <div>Loading...</div>;
-    }
+    if (!user) return <div>Загрузка...</div>;
 
     return (
         <div>
-            <NavBar/>
-            <h2 className={styles.headerText}>Оцените Soft скиллы {user.name}</h2>
-            {isSaving && <p>Saving changes...</p>}
+            <NavBar />
+            <h2 className={styles.headerText}>Оцените Soft Skills {user.firstName} {user.lastName}</h2>
+            {isSaving && <p>Сохранение изменений...</p>}
+
             <ul className={styles.allSkillsList}>
-                {softSkills.map(skill => (
-                    <li key={skill.name}>
-                        <div>{skill.name}</div>
-                        <ul className={styles.concreteSkillsList}>
-                            {skill.indicators.map(indicator => (
-                                <li key={indicator}>
-                                    <span>{indicator}:</span>
-                                    <select
-                                        value={ratings[skill.name]?.[indicator] || "no data"}
-                                        onChange={(e) => handleRatingChange(skill.name, indicator, e.target.value)}
-                                    >
-                                        <option value="no data"></option>
-                                        <option value="-1">-1</option>
-                                        <option value="0">0</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
-                                </li>
-                            ))}
-                        </ul>
-                    </li>
-                ))}
+                {softSkills && softSkills.length > 0 ? (
+                    softSkills.map(skill => (
+                        <li key={skill.name}>
+                            <div>{skill.name}</div>
+                            <ul className={styles.concreteSkillsList}>
+                                {(skill.indicators || []).map(indicator => (
+                                    <li key={indicator}>
+                                        <span>{indicator}:</span>
+                                        <select
+                                            value={ratings[skill.name]?.[indicator] || "no data"}
+                                            onChange={(e) => handleRatingChange(skill.name, indicator, e.target.value)}
+                                        >
+                                            <option value="no data">Нет данных</option>
+                                            <option value="-1">-1</option>
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                        </select>
+                                    </li>
+                                ))}
+                            </ul>
+                        </li>
+                    ))
+                ) : (
+                    <p>Загрузка данных о навыках...</p>
+                )}
             </ul>
+
             <div className={styles.rateButtons}>
                 <Link to={`/profile-info/${id}`}>
                     <button>Вернуться к профилю</button>
