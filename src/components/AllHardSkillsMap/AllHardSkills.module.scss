@@ -21,19 +21,22 @@ $hover-color: #002977;
   padding: 0;
   justify-content: center;
   margin-bottom: 90px;
+
   li {
     width: 300px;
     list-style-type: none;
+
     a {
       text-decoration: none;
 
       &:hover {
-        div{
+        div {
           background-color: $hover-color;
           opacity: 80%;
         }
       }
     }
+
     div {
       display: flex;
       align-items: center;
@@ -44,7 +47,7 @@ $hover-color: #002977;
       height: 54px;
       width: 300px;
       border-radius: 2px;
-      background-color: $primary-color ;
+      background-color: $primary-color;
       color: white;
       opacity: 65%;
     }
@@ -59,14 +62,11 @@ $hover-color: #002977;
         margin-top: 7px;
         background-color: #f4f4f1;
         text-align: center;
+
         span {
           margin: auto;
         }
-
       }
     }
   }
 }
-
-
-

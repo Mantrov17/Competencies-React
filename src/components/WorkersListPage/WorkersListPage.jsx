@@ -11,7 +11,7 @@ const WorkersListPage = () => {
     const { user, accessToken } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(true); // Добавлено состояние загрузки
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (!accessToken) {
@@ -59,13 +59,11 @@ const WorkersListPage = () => {
             )}
             <ul className={styles.profilesList}>
                 {profiles.map(profile => (
-
                     <Link to={`/profile-info/${profile.id}`}>
                         <li key={profile.id}>
                             {profile.firstName} {profile.lastName}
                         </li>
                     </Link>
-
                 ))}
             </ul>
         </div>

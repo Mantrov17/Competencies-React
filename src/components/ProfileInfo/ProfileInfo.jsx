@@ -10,6 +10,9 @@ const ProfileInfo = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [photo, setPhoto] = useState(null);
+    const [professions, setProfessions] = useState([]);
+    const [selectedProfession, setSelectedProfession] = useState(null);
+    const [isEditingProfession, setIsEditingProfession] = useState(false); // Состояние для управления режимом редактирования
     const currentUserId = useSelector((state) => state.auth.userId);
     const roleType = useSelector((state) => state.auth.roleType);
     const dispatch = useDispatch();
@@ -46,6 +49,7 @@ const ProfileInfo = () => {
         try {
             const data = await apiFetch(`http://localhost:8081/users/${id}`);
             setUser(data);
+            setSelectedProfession(data.profession?.id || null);
         } catch (error) {
             console.error("Ошибка при загрузке данных пользователя:", error);
         } finally {
@@ -73,9 +77,37 @@ const ProfileInfo = () => {
         }
     };
 
+    const fetchProfessions = async () => {
+        try {
+            const data = await apiFetch('http://localhost:8081/professions/all');
+            setProfessions(data);
+        } catch (error) {
+            console.error("Ошибка при загрузке списка профессий:", error);
+        }
+    };
+
+    const handleProfessionUpdate = async () => {
+        if (selectedProfession) {
+            try {
+                await apiFetch(`http://localhost:8081/users/${id}/profession/${selectedProfession}/update`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                fetchUserData(); // Обновляем данные пользователя после изменения профессии
+                setIsEditingProfession(false); // Закрываем режим редактирования после сохранения
+            } catch (error) {
+                console.error("Ошибка при обновлении профессии пользователя:", error);
+            }
+        }
+    };
+
     useEffect(() => {
         fetchUserData();
         fetchUserPhoto();
+        fetchProfessions();
     }, [id]);
 
     if (loading) {
@@ -127,12 +159,45 @@ const ProfileInfo = () => {
                     )}
 
                     <p>Город: {user.city || 'Не указано'}</p>
-                    <p>Профессия: {user.profession ? user.profession.name : 'Не указана'}</p>
+
+                    {/* Блок для отображения или изменения профессии */}
+                    <div className={styles.professionContainer}>
+                        <p>Профессия: {user.profession ? user.profession.name : 'Не указана'}</p>
+                        {roleType === 'ROLE_ADMIN' && !isEditingProfession && (
+                            <button
+                                onClick={() => setIsEditingProfession(true)}
+                                className={styles.editButton}
+                            >
+                                Изменить
+                            </button>
+                        )}
+                        {isEditingProfession && (
+                            <div className={styles.professionSelection}>
+                                <select
+                                    id="professionSelect"
+                                    value={selectedProfession || ""}
+                                    onChange={(e) => setSelectedProfession(e.target.value)}
+                                >
+                                    <option value="">Не указана</option>
+                                    {professions.map((profession) => (
+                                        <option key={profession.id} value={profession.id}>
+                                            {profession.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <div>
+                                    <button onClick={handleProfessionUpdate}>Сохранить</button>
+                                    <button onClick={() => setIsEditingProfession(false)}>Отмена</button>
+                                </div>
+
+                            </div>
+                        )}
+                    </div>
+
                     <p>Дата рождения: {user.dateOfBirth || 'Не указана'}</p>
                     <p>Пол: {genderDisplay}</p>
                 </div>
 
-                {/* Кнопки для просмотра и оценки Soft и Hard Skills */}
                 {(parseInt(id) === parseInt(currentUserId) || roleType === 'ROLE_ADMIN') ? (
                     <div className={styles.rateButtons}>
                         <Link to={`/users/${id}/hard-skills/average-ratings`}>

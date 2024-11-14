@@ -1,5 +1,3 @@
-// utils/api.js
-
 export const getAuthHeader = () => {
     const token = localStorage.getItem('accessToken');
     return token ? { Authorization: `Bearer ${token}` } : {};
@@ -7,11 +5,11 @@ export const getAuthHeader = () => {
 
 export const apiFetch = async (url, options = {}) => {
     const authHeader = getAuthHeader();
-    const isFormData = options.body instanceof FormData; // Ensure this is defined before use
+    const isFormData = options.body instanceof FormData;
     options.headers = {
         ...options.headers,
         ...authHeader,
-        ...(isFormData ? {} : { 'Content-Type': 'application/json' }),  // Content-Type не добавляется для FormData
+        ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
     };
 
     console.log('Отправка запроса на', url);
@@ -30,12 +28,10 @@ export const apiFetch = async (url, options = {}) => {
         throw new Error(`HTTP Error: ${response.status}`);
     }
 
-    // Проверяем, есть ли содержимое в ответе
     const contentType = response.headers.get('content-type');
     const contentLength = response.headers.get('content-length');
 
     if (response.status === 204 || !contentType || contentLength === '0') {
-        // Ответ без содержимого
         return null;
     }
 
@@ -47,4 +43,3 @@ export const apiFetch = async (url, options = {}) => {
         return null;
     }
 };
-

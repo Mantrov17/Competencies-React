@@ -12,7 +12,7 @@ const AdminAllHardSkills = () => {
     const [newSkillName, setNewSkillName] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [loading, setLoading] = useState(true); // Добавлено состояние загрузки
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -147,8 +147,6 @@ const AdminAllHardSkills = () => {
         }
     };
 
-
-
     const handleDeleteProfession = async (professionId) => {
         try {
             await apiFetch(`http://localhost:8081/professions/${professionId}/delete`, {
@@ -168,9 +166,10 @@ const AdminAllHardSkills = () => {
             }, 3000);
         }
     };
+
     if (loading) {
         return (
-            <div  style={{ paddingTop: '60px' }}>
+            <div style={{ paddingTop: '60px' }}>
                 <NavBar />
                 <p>Загрузка данных...</p>
             </div>

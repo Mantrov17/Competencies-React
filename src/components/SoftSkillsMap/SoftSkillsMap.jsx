@@ -1,5 +1,3 @@
-// src/components/SoftSkillsMap/SoftSkillsMap.jsx
-
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styles from './SoftSkillsMap.module.scss';

@@ -6,12 +6,10 @@ import NavBar from "../NavBar/NavBar";
 import { apiFetch } from '../../utils/api';
 
 const RegistrationPage = () => {
-    const [formData, setFormData] = useState({
-        // Ваши поля формы...
-    });
+    const [formData, setFormData] = useState({});
     const [successMessage, setSuccessMessage] = useState('');
     const [professions, setProfessions] = useState([]);
-    const [loading, setLoading] = useState(true); // Добавлено состояние загрузки
+    const [loading, setLoading] = useState(true);
     const dispatch = useDispatch();
     const { status, error } = useSelector((state) => state.auth);
 
@@ -32,13 +30,11 @@ const RegistrationPage = () => {
     const handleRegistration = (e) => {
         e.preventDefault();
 
-        // Проверка заполнения всех обязательных полей
         if (!formData.dateOfBirth || !formData.city || !formData.gender || !formData.professionId) {
             alert("Пожалуйста, заполните все поля.");
             return;
         }
 
-        // Преобразование gender в ожидаемый формат
         let genderValue = '';
         if (formData.gender === 'Мужской') {
             genderValue = 'MALE';
@@ -49,10 +45,8 @@ const RegistrationPage = () => {
             return;
         }
 
-        // Преобразование professionId в объект profession
         const profession = professions.find(prof => prof.id === parseInt(formData.professionId));
 
-        // Формирование данных для отправки на сервер
         const dataToSend = {
             firstName: formData.firstName,
             lastName: formData.lastName,
@@ -62,7 +56,6 @@ const RegistrationPage = () => {
             gender: genderValue,
             dateOfBirth: formData.dateOfBirth,
             profession: profession ? { id: profession.id, name: profession.name } : null,
-            // Если необходимо добавить роли, можно добавить поле roles
             roles: ['ROLE_USER'],
         };
 
@@ -181,20 +174,6 @@ const RegistrationPage = () => {
                             onChange={handleChange}
                             required
                         />
-                    </div>
-                    <div>
-                        <label>Профессия:</label>
-                        <select
-                            name="professionId"
-                            value={formData.professionId}
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="">Выберите профессию</option>
-                            {professions.map(prof => (
-                                <option key={prof.id} value={prof.id}>{prof.name}</option>
-                            ))}
-                        </select>
                     </div>
                     {status === 'loading' && <p>Регистрация...</p>}
                     {error && <p className={styles.errorMessage}>Ошибка: {error}</p>}

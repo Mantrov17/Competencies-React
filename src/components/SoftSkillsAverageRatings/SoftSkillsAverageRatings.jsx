@@ -1,5 +1,3 @@
-// src/components/SoftSkillsAverageRatings/SoftSkillsAverageRatings.jsx
-
 import React, { useEffect, useState } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
 import styles from './SoftSkillsAverageRatings.module.scss';

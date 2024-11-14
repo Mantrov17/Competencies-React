@@ -1,5 +1,3 @@
-// src/store/authSlice.js
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const registerUser = createAsyncThunk(
@@ -44,7 +42,6 @@ export const loginUser = createAsyncThunk(
             console.log('Данные, полученные при авторизации:', data);
             const { accessToken, roleType, userId } = data;
 
-            // Сохраняем данные в localStorage
             localStorage.setItem('accessToken', accessToken);
             localStorage.setItem('roleType', roleType);
             localStorage.setItem('userId', userId);
@@ -65,7 +62,7 @@ const initialState = {
     roleType: localStorage.getItem('roleType') || null,
     userId: localStorage.getItem('userId') || null,
     status: 'idle',
-    profilePhoto: null, // Добавляем начальное значение для фото профиля
+    profilePhoto: null,
     error: null,
 };
 
@@ -74,7 +71,7 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         updateProfilePhoto: (state, action) => {
-            console.log("Обновляем фото профиля с URL:", action.payload); // Лог для проверки
+            console.log("Обновляем фото профиля с URL:", action.payload);
             state.profilePhoto = action.payload;
         },
         logout: (state) => {

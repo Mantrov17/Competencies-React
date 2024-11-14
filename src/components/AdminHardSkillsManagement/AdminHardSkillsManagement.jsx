@@ -10,7 +10,7 @@ const AdminHardSkillsManagement = () => {
     const [editSkillName, setEditSkillName] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [loading, setLoading] = useState(true); // Добавлено состояние загрузки
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchHardSkills();
@@ -100,9 +100,10 @@ const AdminHardSkillsManagement = () => {
             }, 3000);
         }
     };
+
     if (loading) {
         return (
-            <div  style={{ paddingTop: '60px' }}>
+            <div style={{ paddingTop: '60px' }}>
                 <NavBar />
                 <p>Загрузка данных...</p>
             </div>

@@ -1,5 +1,3 @@
-// File: UnauthorizedPage.jsx
-
 import React from 'react';
 
 const UnauthorizedPage = () => {

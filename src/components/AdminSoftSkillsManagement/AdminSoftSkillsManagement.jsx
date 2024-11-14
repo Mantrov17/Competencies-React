@@ -10,7 +10,7 @@ const AdminSoftSkillsManagement = () => {
     const [newSkillName, setNewSkillName] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [loading, setLoading] = useState(true); // Добавлено состояние загрузки
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchCategories();
@@ -134,6 +134,7 @@ const AdminSoftSkillsManagement = () => {
             }, 3000);
         }
     };
+
     if (loading) {
         return (
             <div  style={{ paddingTop: '60px' }}>

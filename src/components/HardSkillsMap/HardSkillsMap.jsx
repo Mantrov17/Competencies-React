@@ -11,8 +11,7 @@ const HardSkillsMap = () => {
     const [hardSkillsData, setHardSkillsData] = useState([]);
     const [ratings, setRatings] = useState({});
     const [isSaving, setIsSaving] = useState(false);
-    const [loading, setLoading] = useState(true); // Добавлено состояние загрузки
-
+    const [loading, setLoading] = useState(true);
     const currentUserId = useSelector((state) => state.auth.userId);
 
     useEffect(() => {
@@ -70,7 +69,6 @@ const HardSkillsMap = () => {
                         );
 
                         if (response.status === 409) {
-                            console.warn(`Оценка для навыка ${hardSkillId} уже существует, обновляем...`);
                             await apiFetch(
                                 `http://localhost:8081/users/${id}/hard-skills/${hardSkillId}/update/${rating}`,
                                 {
@@ -94,7 +92,6 @@ const HardSkillsMap = () => {
             setIsSaving(false);
         }
     };
-
 
     if (loading) {
         return (

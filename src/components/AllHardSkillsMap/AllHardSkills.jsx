@@ -5,7 +5,7 @@ import { apiFetch } from '../../utils/api';
 
 const AllHardSkills = () => {
     const [professions, setProfessions] = useState([]);
-    const [loading, setLoading] = useState(true); // Добавлено состояние загрузки
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {

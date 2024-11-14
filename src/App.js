@@ -7,7 +7,6 @@ import HardSkillsMap from './components/HardSkillsMap/HardSkillsMap';
 import SoftSkillsMap from './components/SoftSkillsMap/SoftSkillsMap';
 import WorkersListPage from './components/WorkersListPage/WorkersListPage';
 import AllHardSkills from './components/AllHardSkillsMap/AllHardSkills';
-
 import LoginPage from './components/LoginPage/LoginPage';
 import RegistrationPage from './components/RegistrationPage/RegistrationPage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -17,7 +16,6 @@ import AdminHardSkillsManagement from "./components/AdminHardSkillsManagement/Ad
 import AdminSoftSkillsManagement from "./components/AdminSoftSkillsManagement/AdminSoftSkillsManagement";
 import HardSkillsAverageRatings from "./components/HardSkillsAverageRatings/HardSkillsAverageRatings";
 import SoftSkillsAverageRatings from "./components/SoftSkillsAverageRatings/SoftSkillsAverageRatings";
-
 
 const App = () => {
     const { accessToken } = useSelector((state) => state.auth);
@@ -106,7 +104,6 @@ const App = () => {
                         </ProtectedRoute>
                     }
                 />
-
                 <Route
                     path="/registration-page"
                     element={

@@ -1,4 +1,3 @@
-// src/components/NavBar/NavBar.module.scss
 $primary-color: #0035a0;
 $hover-color: #002977;
 $dropdown-bg-color: #0044cc;
@@ -80,7 +79,6 @@ $dropdown-bg-color: #0044cc;
 
 .dropdown:hover {
   height: 100%;
-
   text-align: left;
   background: none;
   color: white;
@@ -100,9 +98,8 @@ $dropdown-bg-color: #0044cc;
 }
 
 .profileImage {
-  width: 40px; /* Установите желаемую ширину */
-  height: 40px; /* Установите желаемую высоту */
-  border-radius: 50%; /* Сделать изображение круглым */
-  object-fit: cover; /* Чтобы изображение корректно помещалось в заданные размеры */
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
 }
-
