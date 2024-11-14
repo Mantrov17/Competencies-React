@@ -1,0 +1,111 @@
+$primary-color: #0035a0;
+$secondary-color: #6c757d;
+$success-color: #37aa4a;
+$danger-color: #dc3545;
+$hover-color: #00246e;
+$hover-success-color: #287734;
+
+.headerText {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  padding-top: 70px;
+  color: $primary-color;
+  text-align: center;
+}
+
+.allSkillsList {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 0;
+  justify-content: center;
+  margin-bottom: 60px;
+
+  .category {
+    width: 300px;
+    list-style-type: none;
+
+    .categoryTitle {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border: 1px solid $primary-color;
+      padding: 0.5rem;
+      height: 35px;
+      width: 300px;
+      border-radius: 2px;
+      background-color: $primary-color;
+      color: white;
+      opacity: 65%;
+    }
+
+    .concreteSkillsList {
+      list-style-type: none;
+      padding: 0;
+
+      .skillItem {
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid $primary-color;
+        padding: 0.5rem;
+        border-radius: 15px;
+        margin-top: 7px;
+        background-color: #f4f4f1;
+        text-align: center;
+
+        span {
+          margin: auto;
+        }
+
+        .averageRatingCircle {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          width: 35px;
+          height: 35px;
+
+          border: 1px solid $primary-color;
+          background-color: white;
+        }
+      }
+    }
+  }
+}
+
+.rateButtons {
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+
+  a {
+    margin-right: 50%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    cursor: auto;
+    z-index: 1;
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    width: 195px;
+
+    button {
+      width: 100%;
+      font-size: 1em;
+      background-color: $primary-color;
+      box-shadow: 0 2px 25px $primary-color;
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+      &:hover {
+        background-color: $hover-color;
+      }
+    }
+  }
+}

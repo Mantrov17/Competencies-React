@@ -21,7 +21,7 @@ const WorkersListPage = () => {
         // Функция загрузки списка пользователей
         const fetchProfiles = async () => {
             try {
-                const data = await apiFetch('http://localhost:8080/users/');
+                const data = await apiFetch('http://localhost:8081/users');
                 setProfiles(data);
             } catch (error) {
                 console.error('Ошибка при загрузке профилей:', error);

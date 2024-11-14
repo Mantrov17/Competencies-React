@@ -11,7 +11,7 @@ const HardSkillNoRate = () => {
     useEffect(() => {
         const fetchSkillsData = async () => {
             try {
-                const data = await apiFetch(`http://localhost:8080/hard-skills/category/${category}`);
+                const data = await apiFetch(`http://localhost:8081/hard-skills/category/${category}`);
                 setSkills(data);
             } catch (error) {
                 console.error("Error loading skills data:", error);

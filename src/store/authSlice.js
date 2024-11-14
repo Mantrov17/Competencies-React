@@ -1,24 +1,22 @@
-// Файл: authSlice.js
+// src/store/authSlice.js
+
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-// Асинхронное действие для регистрации пользователя
 export const registerUser = createAsyncThunk(
     'auth/registerUser',
-    async ({ firstName, lastName, email, password }, thunkAPI) => {
+    async (formData, thunkAPI) => {
         try {
             const response = await fetch('http://localhost:8080/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ firstName, lastName, email, password }),
+                body: JSON.stringify(formData),
             });
-
             if (!response.ok) {
                 const errorText = await response.text();
                 return thunkAPI.rejectWithValue(errorText);
             }
-
             const data = await response.json();
             return data;
         } catch (error) {
@@ -27,7 +25,6 @@ export const registerUser = createAsyncThunk(
     }
 );
 
-// Асинхронное действие для входа пользователя
 export const loginUser = createAsyncThunk(
     'auth/loginUser',
     async ({ email, password }, thunkAPI) => {
@@ -39,25 +36,36 @@ export const loginUser = createAsyncThunk(
                 },
                 body: JSON.stringify({ email, password }),
             });
-
             if (!response.ok) {
                 const errorText = await response.text();
                 return thunkAPI.rejectWithValue(errorText);
             }
-
             const data = await response.json();
-            return data;
+            console.log('Данные, полученные при авторизации:', data);
+            const { accessToken, roleType, userId } = data;
+
+            // Сохраняем данные в localStorage
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('roleType', roleType);
+            localStorage.setItem('userId', userId);
+
+            return {
+                accessToken,
+                roleType,
+                userId,
+            };
         } catch (error) {
             return thunkAPI.rejectWithValue(error.message);
         }
     }
 );
 
-// Инициализация состояния с данными из localStorage
 const initialState = {
-    user: JSON.parse(localStorage.getItem('user')) || null,
     accessToken: localStorage.getItem('accessToken') || null,
+    roleType: localStorage.getItem('roleType') || null,
+    userId: localStorage.getItem('userId') || null,
     status: 'idle',
+    profilePhoto: null, // Добавляем начальное значение для фото профиля
     error: null,
 };
 
@@ -65,19 +73,26 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
+        updateProfilePhoto: (state, action) => {
+            console.log("Обновляем фото профиля с URL:", action.payload); // Лог для проверки
+            state.profilePhoto = action.payload;
+        },
         logout: (state) => {
-            state.user = null;
-            state.accessToken = null;
+            state.userId = null;
+            state.roleType = null;
+            state.profilePhoto = null;
             localStorage.removeItem('accessToken');
-            localStorage.removeItem('user');
+            localStorage.removeItem('roleType');
+            localStorage.removeItem('userId');
         },
     },
+
     extraReducers: (builder) => {
         builder
             .addCase(registerUser.pending, (state) => {
                 state.status = 'loading';
             })
-            .addCase(registerUser.fulfilled, (state, action) => {
+            .addCase(registerUser.fulfilled, (state) => {
                 state.status = 'succeeded';
             })
             .addCase(registerUser.rejected, (state, action) => {
@@ -89,12 +104,9 @@ const authSlice = createSlice({
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.user = action.payload.user || null;
-                state.accessToken = action.payload.accessToken || null;
-
-                // Сохраняем в localStorage
-                localStorage.setItem('accessToken', action.payload.accessToken);
-                localStorage.setItem('user', JSON.stringify(action.payload.user));
+                state.accessToken = action.payload.accessToken;
+                state.roleType = action.payload.roleType;
+                state.userId = action.payload.userId;
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.status = 'failed';
@@ -103,6 +115,5 @@ const authSlice = createSlice({
     },
 });
 
-export const { logout } = authSlice.actions;
-
+export const { updateProfilePhoto, logout } = authSlice.actions;
 export default authSlice.reducer;

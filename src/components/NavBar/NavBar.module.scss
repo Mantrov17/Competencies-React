@@ -1,5 +1,7 @@
+// src/components/NavBar/NavBar.module.scss
 $primary-color: #0035a0;
 $hover-color: #002977;
+$dropdown-bg-color: #0044cc;
 
 .navBar {
   display: flex;
@@ -9,37 +11,98 @@ $hover-color: #002977;
   height: 50px;
   background-color: $primary-color;
   position: fixed;
-  margin: 0;
-  z-index: 1;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  padding: 0 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .myProfileButton {
   display: flex;
+  align-items: center;
   text-decoration: none;
   color: white;
-  height: 100%;
-  align-items: center;
-  padding-right: 10px;
-  padding-left: 10px;
+  padding: 0 10px;
 
   img {
     max-height: 90%;
-    max-width: 50px;
-    border-radius: 50%;
+    max-width: 40px;
+    border-radius: 50px;
   }
 }
 
-.usersRateButton {
+.usersRateButton,
+.logoutButton, .adminButton {
   display: flex;
-  justify-content: center;
   align-items: center;
-  text-decoration: none;
   color: white;
-  margin: 0 auto;
-  width: 100%;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 15px;
   height: 100%;
+
   &:hover {
-      background-color: $hover-color;
-      opacity: 80%;
+    background-color: $hover-color;
   }
 }
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdownContent {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: $dropdown-bg-color;
+  min-width: 160px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  padding: 10px 0;
+  z-index: 1001;
+
+  .usersRateButton {
+    width: 100%;
+    padding: 10px 15px;
+    text-align: left;
+    background: none;
+    color: white;
+
+    &:hover {
+      background-color: $hover-color;
+    }
+  }
+}
+
+.dropdown:hover {
+  height: 100%;
+
+  text-align: left;
+  background: none;
+  color: white;
+
+  &:hover {
+    background-color: $hover-color;
+  }
+}
+
+.dropdown:hover .dropdownContent {
+  display: block;
+  width: 100%;
+}
+
+.logoutButton {
+  font-size: 1em;
+}
+
+.profileImage {
+  width: 40px; /* Установите желаемую ширину */
+  height: 40px; /* Установите желаемую высоту */
+  border-radius: 50%; /* Сделать изображение круглым */
+  object-fit: cover; /* Чтобы изображение корректно помещалось в заданные размеры */
+}
+

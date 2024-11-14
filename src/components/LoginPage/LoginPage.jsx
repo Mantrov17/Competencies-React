@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../store/authSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from "./LoginPage.module.scss"
-import NavBar from "../NavBar/NavBar";
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -27,7 +26,7 @@ const LoginPage = () => {
 
     return (
         <div>
-            <NavBar/>
+
             <div className={styles.loginPage}>
                 <h2>Вход</h2>
                 <form onSubmit={handleLogin}>
@@ -49,13 +48,10 @@ const LoginPage = () => {
                             required
                         />
                     </div>
-                    {status === 'loading' && <p>Вход...</p>}
+                    {status === 'loading' && <p className={styles.enterMessage}>Вход...</p>}
                     {error && <p className={styles.errorMessage}>Ошибка: Неверный логин или пароль</p>}
                     <button type="submit">Войти</button>
                 </form>
-                <p>
-                    Нет аккаунта? <Link to="/registration-page">Зарегистрируйтесь здесь</Link>
-                </p>
             </div>
         </div>
     );

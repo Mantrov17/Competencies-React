@@ -1,0 +1,143 @@
+// src/components/AdminHardSkillsManagement/AdminHardSkillsManagement.module.scss
+
+@use 'sass:color';
+
+$primary-color: #0035a0;
+$hover-color: #002977;
+$success-color: #28a745;
+$error-color: #dc3545;
+$error-color-hover: #ca313f;
+
+.headerText {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: $primary-color;
+  text-align: center;
+  margin-top: 70px; // Отступ сверху, чтобы не перекрываться с навигацией
+  margin-bottom: 20px;
+}
+
+.successMessage {
+  color: $success-color;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 1.1em;
+  padding: 10px;
+  background-color: rgba(40, 167, 69, 0.1);
+  border: 1px solid $success-color;
+  border-radius: 5px;
+}
+
+.errorMessage {
+  color: $error-color;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 1.1em;
+  padding: 10px;
+  background-color: rgba(220, 53, 69, 0.1);
+  border: 1px solid $error-color;
+  border-radius: 5px;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+
+  h3 {
+    color: $primary-color;
+    margin-bottom: 10px;
+  }
+
+  .inputField {
+    padding: 8px;
+    width: 80%;
+    max-width: 400px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+  }
+
+  .addButton {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $hover-color;
+    }
+  }
+}
+
+.skillsList {
+  max-width: 800px;
+  margin: 0 auto;
+
+  h3 {
+    text-align: center;
+    color: $primary-color;
+    margin-bottom: 20px;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+
+    .skillItem {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+      color: #333;
+
+      span {
+        flex-grow: 1;
+      }
+
+      .inputField {
+        flex-grow: 1;
+        padding: 5px;
+        margin-right: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      .editButton {
+        background-color: $primary-color;
+        margin-right: 10px;
+        transition: background-color 0.3s;
+        border: none;
+        color: white;
+        cursor: pointer;
+        padding: 8px 12px;
+        font-size: 0.9em;
+        border-radius: 5px;
+
+        &:hover {
+          background-color: $hover-color;
+        }
+      }
+
+      .deleteButton {
+        background-color: $error-color;
+        border: none;
+        color: white;
+        cursor: pointer;
+        padding: 8px 12px;
+        font-size: 0.9em;
+        border-radius: 5px;
+
+        &:hover {
+          background-color: $error-color-hover;
+        }
+      }
+    }
+  }
+}
